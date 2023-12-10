@@ -19,7 +19,11 @@ class Availability(models.Model):
     class Meta:
         managed = False
         db_table = 'Availability'
+        verbose_name = 'Наличие'
+        verbose_name_plural = 'Наличие'
 
+        def str(self):
+            return self.title
 
 class Brands(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True, blank=True, null=False)  # Field name made lowercase.
