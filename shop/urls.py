@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include, re_path
 from rest_framework import routers
 
@@ -11,7 +12,6 @@ router.register(r'brands', BrandsViewSet)
 router.register(r'carts', CartViewSet)
 router.register(r'deliverymethods', DeliverymethodViewSet)
 router.register(r'departments', DepartmentsViewSet)
-router.register(r'employeepermissions', EmployeepermissionsViewSet)
 router.register(r'employeepositions', EmployeepositionsViewSet)
 router.register(r'employeesdepartments', EmployeesdepartmentsViewSet)
 router.register(r'favouriteproducts', FavouriteproductsViewSet)
@@ -45,9 +45,7 @@ router.register(r'permissions', PermissionsViewSet)
 router.register(r'customers', CustomersViewSet)
 
 urlpatterns = [
+    path('api/drf-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
 
-    path('api/drf-auth/', include('rest_framework.urls')),
-    path('api/auth/', include('djoser.urls')),
-    re_path(r'^auth/', include('djoser.urls.authtoken')),
 ]

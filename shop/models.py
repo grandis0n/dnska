@@ -5,7 +5,8 @@ class Availability(models.Model):
     id = models.AutoField(primary_key=True)
     productid = models.ForeignKey('Products', models.DO_NOTHING, db_column='ProductID', blank=True,
                                   null=True, verbose_name='Наименование')  # Field name made lowercase.
-    quantity = models.IntegerField(db_column='Quantity', blank=True, null=True, verbose_name='Количество:')  # Field name made lowercase.
+    quantity = models.IntegerField(db_column='Quantity', blank=True, null=True,
+                                   verbose_name='Количество:')  # Field name made lowercase.
     storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreID', blank=True, verbose_name='Магазин:',
                                 null=True)  # Field name made lowercase.
 
@@ -18,10 +19,12 @@ class Availability(models.Model):
     def __str__(self):
         return f"{self.productid.name} Колличество: {self.quantity} Магазин: {self.storeid.city} {self.storeid.street} {self.storeid.building}"
 
+
 class Brands(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True, blank=True, null=False)  # Field name made lowercase.
-    name = models.TextField(db_column='Name', verbose_name = 'Название')  # Field name made lowercase.
-    country = models.TextField(db_column='Country', verbose_name = 'Страна', blank=True, null=True)  # Field name made lowercase.
+    name = models.TextField(db_column='Name', verbose_name='Название')  # Field name made lowercase.
+    country = models.TextField(db_column='Country', verbose_name='Страна', blank=True,
+                               null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -56,6 +59,9 @@ class Categories(models.Model):
         managed = False
         db_table = 'Categories'
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 # Unable to inspect table 'Customers'
 # The error was: list index out of range
@@ -70,6 +76,9 @@ class Deliverymethod(models.Model):
         managed = False
         db_table = 'DeliveryMethod'
 
+    def __str__(self):
+        return f"{self.deliverytype}"
+
 
 class Departments(models.Model):
     departmentid = models.AutoField(db_column='DepartmentID', primary_key=True, blank=True,
@@ -79,6 +88,9 @@ class Departments(models.Model):
     class Meta:
         managed = False
         db_table = 'Departments'
+
+    def __str__(self):
+        return f"{self.departmentname}"
 
 
 class Employeepermissions(models.Model):
@@ -111,6 +123,7 @@ class Employeepositions(models.Model):
         managed = False
         db_table = 'EmployeePositions'
 
+
 class Employeesdepartments(models.Model):
     employeeid = models.OneToOneField('Employees', models.DO_NOTHING, db_column='EmployeeID', primary_key=True,
                                       blank=True,
@@ -137,14 +150,18 @@ class Favouriteproducts(models.Model):
 class Invoices(models.Model):
     invoiceid = models.AutoField(db_column='InvoiceID', primary_key=True, blank=True,
                                  null=False)  # Field name made lowercase.
-    orderid = models.OneToOneField('Orders', models.DO_NOTHING, db_column='OrderID', verbose_name = 'Заказ')  # Field name made lowercase.
-    amount = models.IntegerField(db_column='Amount', verbose_name = 'Сумма оплаты')  # Field name made lowercase.
+    orderid = models.OneToOneField('Orders', models.DO_NOTHING, db_column='OrderID',
+                                   verbose_name='Заказ')  # Field name made lowercase.
+    amount = models.IntegerField(db_column='Amount', verbose_name='Сумма оплаты')  # Field name made lowercase.
     paymentstatusid = models.ForeignKey('Paymentstatus', models.DO_NOTHING,
-                                        db_column='PaymentStatusID', verbose_name = 'Статус оплаты')  # Field name made lowercase.
+                                        db_column='PaymentStatusID',
+                                        verbose_name='Статус оплаты')  # Field name made lowercase.
     paymenttypeid = models.ForeignKey('Paymenttype', models.DO_NOTHING,
-                                      db_column='PaymentTypeID', verbose_name = 'Тип оплаты')  # Field name made lowercase.
+                                      db_column='PaymentTypeID',
+                                      verbose_name='Тип оплаты')  # Field name made lowercase.
     paymentmethodid = models.ForeignKey('Paymentmethod', models.DO_NOTHING,
-                                        db_column='PaymentMethodID', verbose_name = 'Метод оплаты')  # Field name made lowercase.
+                                        db_column='PaymentMethodID',
+                                        verbose_name='Метод оплаты')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -153,17 +170,22 @@ class Invoices(models.Model):
         verbose_name_plural = 'Счёт-фактуры покупателей'
 
     def __str__(self):
-        return f"<{self.orderid.orderid}> {self.amount} рублей"
+        # return f"<{self.orderid.orderid}> {self.amount} рублей"
+        return f"Счет №{self.invoiceid}"
+
 
 
 class Orderdetails(models.Model):
     orderdetailid = models.AutoField(db_column='OrderDetailID', primary_key=True, blank=True,
                                      null=False)  # Field name made lowercase.
-    orderid = models.ForeignKey('Orders', models.DO_NOTHING, db_column='OrderID', verbose_name = 'Заказ')  # Field name made lowercase.
-    productid = models.ForeignKey('Products', models.DO_NOTHING, db_column='ProductID', verbose_name = 'Товар')  # Field name made lowercase.
-    quantity = models.IntegerField(db_column='Quantity', verbose_name = 'Количество')  # Field name made lowercase.
-    price = models.FloatField(db_column='Price', verbose_name = 'Цена')  # Field name made lowercase.
-    statusid = models.ForeignKey('Orderstatus', models.DO_NOTHING, db_column='StatusID', verbose_name = 'Cтатус заказа')  # Field name made lowercase.
+    orderid = models.ForeignKey('Orders', models.DO_NOTHING, db_column='OrderID',
+                                verbose_name='Заказ')  # Field name made lowercase.
+    productid = models.ForeignKey('Products', models.DO_NOTHING, db_column='ProductID',
+                                  verbose_name='Товар')  # Field name made lowercase.
+    quantity = models.IntegerField(db_column='Quantity', verbose_name='Количество')  # Field name made lowercase.
+    price = models.FloatField(db_column='Price', verbose_name='Цена')  # Field name made lowercase.
+    statusid = models.ForeignKey('Orderstatus', models.DO_NOTHING, db_column='StatusID',
+                                 verbose_name='Cтатус заказа')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -178,7 +200,7 @@ class Orderdetails(models.Model):
 class Orderstatus(models.Model):
     statusid = models.AutoField(db_column='StatusID', primary_key=True, blank=True,
                                 null=False)  # Field name made lowercase.
-    statusname = models.TextField(db_column='StatusName', verbose_name = 'Название')  # Field name made lowercase.
+    statusname = models.TextField(db_column='StatusName', verbose_name='Название')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -193,16 +215,20 @@ class Orderstatus(models.Model):
 class Orders(models.Model):
     orderid = models.AutoField(db_column='OrderID', primary_key=True, blank=True,
                                null=False)  # Field name made lowercase.
-    userid = models.ForeignKey('Customers', models.DO_NOTHING, db_column='UserID', verbose_name = 'Покупатель', blank=True,
+    userid = models.ForeignKey('Customers', models.DO_NOTHING, db_column='UserID', verbose_name='Покупатель',
+                               blank=True,
                                null=False)  # Field name made lowercase.
-    date = models.DateField(db_column='Date', verbose_name = 'Дата заказа')  # Field name made lowercase.
-    statusid = models.ForeignKey(Orderstatus, models.DO_NOTHING, db_column='StatusID', verbose_name = 'Статус заказа')  # Field name made lowercase.
+    date = models.DateField(db_column='Date', verbose_name='Дата заказа')  # Field name made lowercase.
+    statusid = models.ForeignKey(Orderstatus, models.DO_NOTHING, db_column='StatusID',
+                                 verbose_name='Статус заказа')  # Field name made lowercase.
     deliveryid = models.ForeignKey(Deliverymethod, models.DO_NOTHING,
-                                   db_column='DeliveryID', verbose_name = 'Метод доставки')  # Field name made lowercase.
-    storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreID', verbose_name = 'Магазин')  # Field name made lowercase.
+                                   db_column='DeliveryID', verbose_name='Метод доставки')  # Field name made lowercase.
+    storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreID',
+                                verbose_name='Магазин')  # Field name made lowercase.
     invoiceid = models.ForeignKey(Invoices, models.DO_NOTHING, db_column='InvoiceID', blank=True,
-                                  null=True, verbose_name = 'Счёт-фактура')  # Field name made lowercase.
-    employeeid = models.ForeignKey('Employees', models.DO_NOTHING, db_column='EmployeeID', blank=True, null=True, verbose_name = 'Ответственный сотрудник')  # Field name made lowercase.
+                                  null=True, verbose_name='Счёт-фактура')  # Field name made lowercase.
+    employeeid = models.ForeignKey('Employees', models.DO_NOTHING, db_column='EmployeeID', blank=True, null=True,
+                                   verbose_name='Ответственный сотрудник')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -211,13 +237,13 @@ class Orders(models.Model):
         verbose_name_plural = 'Заказы покупателей'
 
     def __str__(self):
-        return f"<{self.orderid}> | {self.userid} | {self.storeid} | {self.invoiceid.amount} рублей | {self.statusid} | {self.invoiceid.paymentstatusid} | {self.employeeid} |"
+        return f"Заказ №{self.orderid}"
 
 
 class Paymentmethod(models.Model):
     paymentmethodid = models.AutoField(db_column='PaymentMethodID', primary_key=True, blank=True,
                                        null=False)  # Field name made lowercase.
-    methodname = models.TextField(db_column='MethodName', verbose_name = 'Наименование')  # Field name made lowercase.
+    methodname = models.TextField(db_column='MethodName', verbose_name='Наименование')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -232,7 +258,7 @@ class Paymentmethod(models.Model):
 class Paymentstatus(models.Model):
     paymentstatusid = models.AutoField(db_column='PaymentStatusID', primary_key=True, blank=True,
                                        null=False)  # Field name made lowercase.
-    statusname = models.TextField(db_column='StatusName', verbose_name = 'Наименование')  # Field name made lowercase.
+    statusname = models.TextField(db_column='StatusName', verbose_name='Наименование')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -247,7 +273,7 @@ class Paymentstatus(models.Model):
 class Paymenttype(models.Model):
     paymenttypeid = models.AutoField(db_column='PaymentTypeID', primary_key=True, blank=True,
                                      null=False)  # Field name made lowercase.
-    typename = models.TextField(db_column='TypeName', verbose_name = 'Наименование')  # Field name made lowercase.
+    typename = models.TextField(db_column='TypeName', verbose_name='Наименование')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -262,9 +288,11 @@ class Paymenttype(models.Model):
 class Positionpermissions(models.Model):
     positionpermissionid = models.AutoField(db_column='PositionPermissionID', primary_key=True, blank=True,
                                             null=False)  # Field name made lowercase.
-    positionid = models.ForeignKey('Positions', models.DO_NOTHING, db_column='PositionID', verbose_name = 'Должность', blank=True,
+    positionid = models.ForeignKey('Positions', models.DO_NOTHING, db_column='PositionID', verbose_name='Должность',
+                                   blank=True,
                                    null=False)  # Field name made lowercase.
-    permissionid = models.ForeignKey('Permissions', models.DO_NOTHING, db_column='PermissionID', verbose_name = 'Право', blank=True,
+    permissionid = models.ForeignKey('Permissions', models.DO_NOTHING, db_column='PermissionID', verbose_name='Право',
+                                     blank=True,
                                      null=False)  # Field name made lowercase.
 
     class Meta:
@@ -280,8 +308,10 @@ class Positionpermissions(models.Model):
 class Positions(models.Model):
     positionid = models.AutoField(db_column='PositionID', primary_key=True, blank=True,
                                   null=False)  # Field name made lowercase.
-    positionname = models.TextField(db_column='PositionName', blank=True, null=True, verbose_name = 'Должность')  # Field name made lowercase.
-    description = models.TextField(db_column='Description', blank=True, null=True, verbose_name = 'Описание должности')  # Field name made lowercase.
+    positionname = models.TextField(db_column='PositionName', blank=True, null=True,
+                                    verbose_name='Должность')  # Field name made lowercase.
+    description = models.TextField(db_column='Description', blank=True, null=True,
+                                   verbose_name='Описание должности')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -293,12 +323,13 @@ class Positions(models.Model):
         return f"{self.positionname}"
 
 
-
 class Productcharacteristicsnew(models.Model):
     productcharacteristicid = models.AutoField(db_column='ProductCharacteristicID', primary_key=True, blank=True,
                                                null=False)  # Field name made lowercase.
-    productid = models.ForeignKey('Products', models.DO_NOTHING, db_column='ProductID', verbose_name = 'Товар')  # Field name made lowercase.
-    characteristics = models.TextField(db_column='Characteristics', verbose_name = 'Характеристики', blank=True, null=True)  # Field name made lowercase.
+    productid = models.ForeignKey('Products', models.DO_NOTHING, db_column='ProductID',
+                                  verbose_name='Товар')  # Field name made lowercase.
+    characteristics = models.TextField(db_column='Characteristics', verbose_name='Характеристики', blank=True,
+                                       null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -312,13 +343,16 @@ class Productcharacteristicsnew(models.Model):
 
 class Products(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True, blank=True, null=False)  # Field name made lowercase.
-    sku = models.TextField(db_column='SKU', unique=True, verbose_name = 'Штрихкод')  # Field name made lowercase.
-    name = models.TextField(db_column='Name', verbose_name = 'Наименование')  # Field name made lowercase.
-    description = models.TextField(db_column='Description', verbose_name = 'Описание', blank=True, null=True)  # Field name made lowercase.
-    price = models.FloatField(db_column='Price', blank=True, verbose_name = 'Цена', null=True)  # Field name made lowercase.
-    brandid = models.ForeignKey(Brands, models.DO_NOTHING, db_column='BrandID', verbose_name = 'Бренд', blank=True,
+    sku = models.TextField(db_column='SKU', unique=True, verbose_name='Штрихкод')  # Field name made lowercase.
+    name = models.TextField(db_column='Name', verbose_name='Наименование')  # Field name made lowercase.
+    description = models.TextField(db_column='Description', verbose_name='Описание', blank=True,
+                                   null=True)  # Field name made lowercase.
+    price = models.FloatField(db_column='Price', blank=True, verbose_name='Цена',
+                              null=True)  # Field name made lowercase.
+    brandid = models.ForeignKey(Brands, models.DO_NOTHING, db_column='BrandID', verbose_name='Бренд', blank=True,
                                 null=True)  # Field name made lowercase.
-    categoryid = models.ForeignKey(Categories, models.DO_NOTHING, db_column='CategoryID', verbose_name = 'Категория', blank=True,
+    categoryid = models.ForeignKey(Categories, models.DO_NOTHING, db_column='CategoryID', verbose_name='Категория',
+                                   blank=True,
                                    null=True)  # Field name made lowercase.
 
     class Meta:
@@ -335,9 +369,9 @@ class Storeinvoices(models.Model):
     invoiceid = models.AutoField(db_column='InvoiceID', primary_key=True, blank=True,
                                  null=False)  # Field name made lowercase.
     storeorderid = models.OneToOneField('Storeorders', models.DO_NOTHING,
-                                        db_column='StoreOrderID', verbose_name = 'Магазин')  # Field name made lowercase.
-    sum = models.IntegerField(db_column='Sum', verbose_name = 'Сумма платежа')  # Field name made lowercase.
-    invoicedate = models.DateField(db_column='InvoiceDate', verbose_name = 'Дата платежа')  # Field name made lowercase.
+                                        db_column='StoreOrderID', verbose_name='Магазин')  # Field name made lowercase.
+    sum = models.IntegerField(db_column='Sum', verbose_name='Сумма платежа')  # Field name made lowercase.
+    invoicedate = models.DateField(db_column='InvoiceDate', verbose_name='Дата платежа')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -353,9 +387,11 @@ class Storeorderdetails(models.Model):
     storeorderdetailid = models.AutoField(db_column='StoreOrderDetailID', primary_key=True, blank=True,
                                           null=False)  # Field name made lowercase.
     storeorderid = models.ForeignKey('Storeorders', models.DO_NOTHING,
-                                     db_column='StoreOrderID', verbose_name = 'Номер заказа')  # Field name made lowercase.
-    productid = models.ForeignKey(Products, models.DO_NOTHING, db_column='ProductID', verbose_name = 'Товар')  # Field name made lowercase.
-    quantity = models.IntegerField(db_column='Quantity', verbose_name = 'Количество')  # Field name made lowercase.
+                                     db_column='StoreOrderID',
+                                     verbose_name='Номер заказа')  # Field name made lowercase.
+    productid = models.ForeignKey(Products, models.DO_NOTHING, db_column='ProductID',
+                                  verbose_name='Товар')  # Field name made lowercase.
+    quantity = models.IntegerField(db_column='Quantity', verbose_name='Количество')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -370,11 +406,13 @@ class Storeorderdetails(models.Model):
 class Storeorders(models.Model):
     storeorderid = models.AutoField(db_column='StoreOrderID', primary_key=True, blank=True,
                                     null=False)  # Field name made lowercase.
-    employeeid = models.ForeignKey('Employees', models.DO_NOTHING, db_column='EmployeeID', verbose_name = 'Сотрудник', blank=True,
+    employeeid = models.ForeignKey('Employees', models.DO_NOTHING, db_column='EmployeeID', verbose_name='Сотрудник',
+                                   blank=True,
                                    null=False)  # Field name made lowercase.
-    storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreID', verbose_name = 'Магазин')  # Field name made lowercase.
-    orderdate = models.DateField(db_column='OrderDate', verbose_name = 'Дата заказа')  # Field name made lowercase.
-    status = models.TextField(db_column='Status', verbose_name = 'Статус заказа')  # Field name made lowercase.
+    storeid = models.ForeignKey('Stores', models.DO_NOTHING, db_column='StoreID',
+                                verbose_name='Магазин')  # Field name made lowercase.
+    orderdate = models.DateField(db_column='OrderDate', verbose_name='Дата заказа')  # Field name made lowercase.
+    status = models.TextField(db_column='Status', verbose_name='Статус заказа')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -386,13 +424,14 @@ class Storeorders(models.Model):
         return f"<{self.storeorderid}>"
 
 
-
 class Stores(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True, blank=True, null=False)  # Field name made lowercase.
-    city = models.TextField(db_column='City', verbose_name = 'Город', blank=True, null=True)  # Field name made lowercase.
-    street = models.TextField(db_column='Street', verbose_name = 'Улица', blank=True, null=True)  # Field name made lowercase.
-    building = models.TextField(db_column='Building', verbose_name = 'Строение', blank=True, null=True)  # Field name made lowercase.
-    area = models.TextField(db_column='Area', verbose_name = 'Район', blank=True, null=True)  # Field name made lowercase.
+    city = models.TextField(db_column='City', verbose_name='Город', blank=True, null=True)  # Field name made lowercase.
+    street = models.TextField(db_column='Street', verbose_name='Улица', blank=True,
+                              null=True)  # Field name made lowercase.
+    building = models.TextField(db_column='Building', verbose_name='Строение', blank=True,
+                                null=True)  # Field name made lowercase.
+    area = models.TextField(db_column='Area', verbose_name='Район', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -402,8 +441,6 @@ class Stores(models.Model):
 
     def __str__(self):
         return f"г. {self.city}, ул. {self.street}, д. {self.building}, {self.area} район"
-
-
 
 
 class AuthGroup(models.Model):
@@ -518,15 +555,15 @@ class DjangoSession(models.Model):
 
 class Employees(models.Model):
     EmployeeID = models.AutoField(primary_key=True)
-    FirstName = models.TextField(verbose_name = 'Имя')
-    LastName = models.TextField(verbose_name = 'Фамилия')
+    FirstName = models.TextField(verbose_name='Имя')
+    LastName = models.TextField(verbose_name='Фамилия')
     Email = models.EmailField(max_length=319, null=True, blank=True)
-    PhoneNumber = models.CharField(max_length=12, verbose_name = 'Номер телефона')
-    HireDate = models.DateField(null=True, blank=True, verbose_name = 'Дата зачисления')
-    Salary = models.FloatField(null=True, blank=True, verbose_name = 'Зарплата')
-    Status = models.CharField(max_length=10, choices=[('Активен', 'Активен'), ('Уволен', 'Уволен')], default='Активен', verbose_name = 'Статус')
-    DismissalDate = models.DateField(null=True, blank=True, verbose_name = 'Дата увольнения')
-
+    PhoneNumber = models.CharField(max_length=12, verbose_name='Номер телефона')
+    HireDate = models.DateField(null=True, blank=True, verbose_name='Дата зачисления')
+    Salary = models.FloatField(null=True, blank=True, verbose_name='Зарплата')
+    Status = models.CharField(max_length=10, choices=[('Активен', 'Активен'), ('Уволен', 'Уволен')], default='Активен',
+                              verbose_name='Статус')
+    DismissalDate = models.DateField(null=True, blank=True, verbose_name='Дата увольнения')
 
     class Meta:
         managed = False
@@ -538,11 +575,10 @@ class Employees(models.Model):
         return f"{self.LastName} {self.FirstName}"
 
 
-
 class Permissions(models.Model):
     PermissionID = models.AutoField(primary_key=True)
-    PermissionName = models.TextField(verbose_name = 'Название')
-    Description = models.TextField(null=True, blank=True, verbose_name = 'Описание')
+    PermissionName = models.TextField(verbose_name='Название')
+    Description = models.TextField(null=True, blank=True, verbose_name='Описание')
 
     class Meta:
         managed = False
@@ -560,7 +596,6 @@ class Customers(models.Model):
     Email = models.EmailField(max_length=319, null=True, blank=True)
     PhoneNumber = models.CharField(max_length=12, unique=True)
     Address = models.TextField(null=True, blank=True)
-
 
     class Meta:
         managed = False
