@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
 from .permissons import IsAdminOrReadOnly, IsOwnerOrReadOnly
@@ -232,3 +232,8 @@ class CustomersViewSet(viewsets.ModelViewSet):
     queryset = Customers.objects.all()
     serializer_class = CustomersSerializer
     permission_classes = [IsAdminUser]
+
+
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = AuthUser.objects.all()
+    serializer_class = UserSerializer

@@ -47,5 +47,5 @@ router.register(r'customers', CustomersViewSet)
 urlpatterns = [
     path('api/drf-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
-
+    path('register/', UserRegistrationView.as_view(), name='user-registration'),
 ]
